@@ -92,6 +92,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    # Django apps
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -99,10 +100,19 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
+    # 3rd-party dependencies
+    'guardian',
+
+    # Our apps
     'pasta_git',
 )
 
-REPOSITORY_HOME = root('repositories')
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # default
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+ANONYMOUS_USER_ID = -1
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
