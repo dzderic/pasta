@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -14,4 +16,6 @@ class Repository(models.Model):
 
     @property
     def path(self):
-        return os.path.join(settings.REPOSITORY_HOME, owner.username, name + '.git')
+        return os.path.join(settings.REPOSITORY_HOME, self.owner.username, self.name + '.git')
+
+from pasta_git.signals import *
