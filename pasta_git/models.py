@@ -12,8 +12,8 @@ class Repository(models.Model):
 
     class Meta(object):
         permissions = (
-            ('can_read', 'Can read from this repository'),
-            ('can_write', 'Can write to this repository'),
+            ('read', 'Can read from this repository'),
+            ('write', 'Can write to this repository'),
         )
 
     @property

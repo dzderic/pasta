@@ -36,3 +36,9 @@ class RepositoryTestCase(unittest.TestCase):
         repo.save()
         fork = repo.fork(recipient=self._human_b)
         self.assertTrue(os.path.exists(fork.path))
+
+    def test_basic_permissions(self):
+        repo = Repository(owner=self._human_a, name='node-is-web-scale')
+        repo.save()
+        self.assertTrue(self._human_a.has_perm('write', repo))
+        self.assertFalse(self._human_b.has_perm('write', repo))
