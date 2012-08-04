@@ -105,6 +105,7 @@ INSTALLED_APPS = (
 
     # Our apps
     'pasta_git',
+    'pasta_ui',
 )
 
 AUTHENTICATION_BACKENDS = (
