@@ -109,7 +109,7 @@ INSTALLED_APPS = (
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # default
-    'guardian.backends.ObjectPermissionBackend',
+    'pasta.backends.FallbackObjectPermissionBackend',
 )
 
 ANONYMOUS_USER_ID = -1

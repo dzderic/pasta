@@ -6,6 +6,8 @@ import shutil
 from django.utils import unittest
 from django.contrib.auth.models import User
 from django.conf import settings
+from guardian.utils import get_anonymous_user
+from guardian.shortcuts import assign
 
 from pasta_git.models import Repository
 
@@ -42,3 +44,11 @@ class RepositoryTestCase(unittest.TestCase):
         repo.save()
         self.assertTrue(self._human_a.has_perm('write', repo))
         self.assertFalse(self._human_b.has_perm('write', repo))
+
+    def test_fallback_to_anonymous_user(self):
+        repo = Repository(owner=self._human_a, name='node-isnt-web-scale')
+        repo.save()
+        self.assertTrue(self._human_a.has_perm('read', repo))
+        self.assertFalse(self._human_b.has_perm('read', repo))
+        assign('read', get_anonymous_user(), repo)
+        self.assertTrue(self._human_b.has_perm('read', repo))
