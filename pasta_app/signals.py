@@ -5,8 +5,8 @@ from django.db.models.signals import pre_save, post_save, post_delete
 from dulwich.repo import Repo
 from guardian.shortcuts import assign
 
-from pasta_git.models import Repository
-from pasta_git.helpers import unique_slugify
+from pasta_app.models import Repository
+from pasta_app.helpers import unique_slugify
 
 def create_repository(instance, **kwargs):
     # Return if the repository has already been created

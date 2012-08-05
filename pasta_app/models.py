@@ -4,6 +4,7 @@ import shutil
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 class Repository(models.Model):
     owner = models.ForeignKey(User)
@@ -28,4 +29,7 @@ class Repository(models.Model):
         new_repo.save()
         return new_repo
 
-from pasta_git.signals import *
+    def get_edit_url(self):
+        return reverse('edit-pasta', args=[self.owner, self.slug])
+
+from pasta_app.signals import *

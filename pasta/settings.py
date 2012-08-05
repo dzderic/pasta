@@ -104,8 +104,7 @@ INSTALLED_APPS = (
     'guardian',
 
     # Our apps
-    'pasta_git',
-    'pasta_ui',
+    'pasta_app',
 )
 
 AUTHENTICATION_BACKENDS = (

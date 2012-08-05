@@ -9,7 +9,7 @@ from django.conf import settings
 from guardian.utils import get_anonymous_user
 from guardian.shortcuts import assign
 
-from pasta_git.models import Repository
+from pasta_app.models import Repository
 
 class RepositoryTestCase(unittest.TestCase):
     def setUp(self):

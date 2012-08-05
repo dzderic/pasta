@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <h2>New pasta</h2>
+  <form class="well form-inline" action="/new/" method="POST">
+    {% csrf_token %}
+    <input type="text" name="new-pasta-name" class="input-xlarge" id="new-pasta-name" placeholder="Name" />
+    <button type="submit" class="btn btn-primary">Let's get cooking!</button>
+  </form>
+
+  <h2>Your pastas</h2>
+  ...
+{% endblock %}
