@@ -21,32 +21,38 @@ class RepositoryTestCase(unittest.TestCase):
         shutil.rmtree(settings.REPOSITORY_HOME)
 
     def test_creating_model_creates_repository(self):
-        repo = Repository(owner=self._human_a, name='awesome-repository')
+        repo = Repository(owner=self._human_a, name='Awesome repository')
         self.assertFalse(os.path.exists(repo.path))
         repo.save()
         self.assertTrue(os.path.exists(repo.path))
 
     def test_deleting_model_archives_repository(self):
-        repo = Repository(owner=self._human_a, name='another-repository')
+        repo = Repository(owner=self._human_a, name='Another repository')
         repo.save()
         self.assertTrue(os.path.exists(repo.path))
         repo.delete()
         self.assertTrue(os.path.exists('%s.archived.%s' % (repo.path, int(time.time()))))
 
+    def test_slug_is_generated(self):
+        repo = Repository(owner=self._human_a, name='Some repository')
+        self.assertEqual(repo.slug, '')
+        repo.save()
+        self.assertEqual(repo.slug, 'some-repository')
+
     def test_forking_works(self):
-        repo = Repository(owner=self._human_a, name='some-code')
+        repo = Repository(owner=self._human_a, name='Some code')
         repo.save()
         fork = repo.fork(recipient=self._human_b)
         self.assertTrue(os.path.exists(fork.path))
 
     def test_basic_permissions(self):
-        repo = Repository(owner=self._human_a, name='node-is-web-scale')
+        repo = Repository(owner=self._human_a, name='Node is web scale')
         repo.save()
         self.assertTrue(self._human_a.has_perm('write', repo))
         self.assertFalse(self._human_b.has_perm('write', repo))
 
     def test_fallback_to_anonymous_user(self):
-        repo = Repository(owner=self._human_a, name='node-isnt-web-scale')
+        repo = Repository(owner=self._human_a, name='Node isnt web scale')
         repo.save()
         self.assertTrue(self._human_a.has_perm('read', repo))
         self.assertFalse(self._human_b.has_perm('read', repo))

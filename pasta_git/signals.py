@@ -1,7 +1,8 @@
 import os
 import time
 
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import pre_save, post_save, post_delete
+from django.template.defaultfilters import slugify
 from dulwich.repo import Repo
 from guardian.shortcuts import assign
 
@@ -34,3 +35,9 @@ def assign_permissions(instance, **kwargs):
     assign('write', instance.owner, instance)
 
 post_save.connect(assign_permissions, sender=Repository)
+
+def generate_slug(instance, **kwargs):
+    if not instance.slug:
+        instance.slug = slugify(instance.name)
+
+pre_save.connect(generate_slug, sender=Repository)

@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 class Repository(models.Model):
     owner = models.ForeignKey(User)
     name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
     fork_of = models.ForeignKey('self', null=True)
 
     class Meta(object):
@@ -18,7 +19,7 @@ class Repository(models.Model):
 
     @property
     def path(self):
-        return os.path.join(settings.REPOSITORY_HOME, self.owner.username, self.name + '.git')
+        return os.path.join(settings.REPOSITORY_HOME, self.owner.username, self.slug + '.git')
 
     def fork(self, recipient):
         new_repo = Repository(owner=recipient, name=self.name, fork_of=self)
