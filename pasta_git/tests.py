@@ -39,6 +39,22 @@ class RepositoryTestCase(unittest.TestCase):
         repo.save()
         self.assertEqual(repo.slug, 'some-repository')
 
+    def test_slugs_are_unique(self):
+        repo = Repository(owner=self._human_a, name='I like turtles')
+        repo2 = Repository(owner=self._human_a, name='I like turtles')
+        repo.save()
+        repo2.save()
+        self.assertEqual(repo.slug, 'i-like-turtles')
+        self.assertEqual(repo2.slug, 'i-like-turtles-2')
+
+    def test_slugs_are_unique_by_user(self):
+        repo = Repository(owner=self._human_a, name='I also like turtles')
+        repo2 = Repository(owner=self._human_b, name='I also like turtles')
+        repo.save()
+        repo2.save()
+        self.assertEqual(repo.slug, 'i-also-like-turtles')
+        self.assertEqual(repo2.slug, 'i-also-like-turtles')
+
     def test_forking_works(self):
         repo = Repository(owner=self._human_a, name='Some code')
         repo.save()

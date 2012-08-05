@@ -16,6 +16,7 @@ class Repository(models.Model):
             ('read', 'Can read from this repository'),
             ('write', 'Can write to this repository'),
         )
+        unique_together = ('owner', 'slug')
 
     @property
     def path(self):

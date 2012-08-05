@@ -2,11 +2,11 @@ import os
 import time
 
 from django.db.models.signals import pre_save, post_save, post_delete
-from django.template.defaultfilters import slugify
 from dulwich.repo import Repo
 from guardian.shortcuts import assign
 
 from pasta_git.models import Repository
+from pasta_git.helpers import unique_slugify
 
 def create_repository(instance, **kwargs):
     # Return if the repository has already been created
@@ -38,6 +38,7 @@ post_save.connect(assign_permissions, sender=Repository)
 
 def generate_slug(instance, **kwargs):
     if not instance.slug:
-        instance.slug = slugify(instance.name)
+        unique_slugify(instance, instance.name,
+                       extra_filter={'owner': instance.owner})
 
 pre_save.connect(generate_slug, sender=Repository)
