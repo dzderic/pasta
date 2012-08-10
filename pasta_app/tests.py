@@ -3,7 +3,7 @@ import time
 import tempfile
 import shutil
 
-from django.utils import unittest
+from django.test import TestCase
 from django.contrib.auth.models import User
 from django.conf import settings
 from guardian.utils import get_anonymous_user
@@ -11,10 +11,10 @@ from guardian.shortcuts import assign
 
 from pasta_app.models import Repository
 
-class RepositoryTestCase(unittest.TestCase):
+class RepositoryTestCase(TestCase):
     def setUp(self):
-        self._human_a, _ = User.objects.get_or_create(username='human-a', password='password')
-        self._human_b, _ = User.objects.get_or_create(username='human-b', password='password')
+        self._human_a, _ = User.objects.get_or_create(username='human-a')
+        self._human_b, _ = User.objects.get_or_create(username='human-b')
         settings.REPOSITORY_HOME = tempfile.mkdtemp()
 
     def tearDown(self):
