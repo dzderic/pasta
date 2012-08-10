@@ -14,6 +14,7 @@ class Repository(models.Model):
 
     class Meta(object):
         permissions = (
+            ('admin', 'Can admin this repository'),
             ('read', 'Can read from this repository'),
             ('write', 'Can write to this repository'),
         )
@@ -32,4 +33,4 @@ class Repository(models.Model):
     def get_edit_url(self):
         return reverse('edit-pasta', args=[self.owner, self.slug])
 
-from pasta_app.signals import *
+from pasta_app.listeners import *

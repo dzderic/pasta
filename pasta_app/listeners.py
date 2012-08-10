@@ -30,9 +30,10 @@ def archive_repository(instance, **kwargs):
 post_delete.connect(archive_repository, sender=Repository)
 
 def assign_permissions(instance, **kwargs):
-    # Give the owner read/write access to their own repository
+    # Give the owner full access to their own repository
     assign('read', instance.owner, instance)
     assign('write', instance.owner, instance)
+    assign('admin', instance.owner, instance)
 
 post_save.connect(assign_permissions, sender=Repository)
 
