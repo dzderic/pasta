@@ -4,20 +4,24 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from pasta_app.models import Repository
+from pasta_app.forms import NewPastaForm
 
 @login_required
 def home(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', {
+        'new_pasta_form': NewPastaForm(),
+    })
 
 @login_required
-def edit_pasta(request):
-    return render(request, 'index.html')
+def view_pasta(request, owner, slug):
+    return render(request, 'pasta/view.html')
 
 @login_required
 def new_pasta(request):
-    if 'new-pasta-name' not in request.POST:
+    if request.method != 'POST':
         return HttpResponseRedirect(reverse('home'))
 
-    repo = Repository(owner=request.user, name=request.POST['new-pasta-name'])
+    repo = NewPastaForm(request.POST).save(commit=False)
+    repo.owner = request.user
     repo.save()
-    return HttpResponseRedirect(repo.get_edit_url())
+    return HttpResponseRedirect(repo.get_absolute_url())

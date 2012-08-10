@@ -6,7 +6,7 @@
   <h2>New pasta</h2>
   <form class="well form-inline" action="/new/" method="POST">
     {% csrf_token %}
-    <input type="text" name="new-pasta-name" class="input-xlarge" id="new-pasta-name" placeholder="Name" />
+    {{ new_pasta_form }}
     <button type="submit" class="btn btn-primary">Let's get cooking!</button>
   </form>
 
