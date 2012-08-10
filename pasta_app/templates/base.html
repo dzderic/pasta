@@ -34,7 +34,14 @@
               <li><a href="#contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
+
+          {% if request.user.is_authenticated %}
+          <ul class="nav pull-right">
+            <li><a href="/accounts/logout/">Logout</a></li>
+          </ul>
+          {% endif %}
         </div>
+
       </div>
     </div>
 

@@ -1,3 +1,4 @@
+from django.conf import global_settings
 import os
 
 root = lambda x: os.path.join(os.path.dirname(__file__), x)
@@ -78,6 +79,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    'django.core.context_processors.request',
 )
 
 ROOT_URLCONF = 'pasta.urls'
