@@ -1,3 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}{{ repo.name }}{% endblock %}
+
+{% block content %}
+  {% for file in files %}
+    {{ file }}
+  {% endfor %}
+{% endblock %}

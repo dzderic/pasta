@@ -5,6 +5,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from dulwich.repo import Repo
 
 from pasta_app.helpers import cached_property
@@ -42,7 +43,16 @@ class Repository(models.Model):
         return reverse('view-pasta', args=[self.owner, self.slug])
 
     def get_files(self, ref='master'):
-        ref_hash = self.repo.ref(ref)
+        refs = self.repo.get_refs()
+        if 'refs/heads/' + ref in refs:
+            ref_hash = refs['refs/heads/' + ref]
+        elif ref in refs:
+            ref_hash = refs[ref]
+        elif len(ref) in (20, 40) and ref in self.repo:
+            ref_hash = ref
+        else:
+            raise Http404("The specified ref wasn't found")
+
         commit = self.repo.commit(ref_hash)
         trees = sorted(self.repo.tree(commit.tree).iteritems(), key=lambda x: x.path)
 
@@ -50,6 +60,11 @@ class Repository(models.Model):
             if not stat.S_ISREG(thing.mode):  # skip if it's not a file
                 pass
 
-            yield thing
+            # Get the git blob from the SHA
+            blob = self.repo.get_blob(thing.sha)
+            yield {
+                'path': thing.path,
+                'contents': blob.data,
+            }
 
 from pasta_app.listeners import *

@@ -13,11 +13,14 @@ def home(request):
     })
 
 @login_required
-def view_pasta(request, owner, slug):
-    repo = get_object_or_404(Repository, owner__username=owner, slug=slug)
+def view_pasta(request, owner, slug, ref):
+    pasta = get_object_or_404(Repository, owner__username=owner, slug=slug)
+    ref = ref or 'master'
 
     return render(request, 'pasta/view.html', {
-        'repo': repo,
+        'pasta': pasta,
+        'ref': ref,
+        'files': pasta.get_files(ref),
     })
 
 @login_required

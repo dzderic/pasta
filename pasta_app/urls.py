@@ -11,5 +11,5 @@ urlpatterns = patterns('pasta_app.views',
     url(r'^accounts/logout/$', logout_then_login, name='logout'),
 
     # This should be last as it matches almost anything
-    url(r'^([^/]+)/([^/]+)/$', 'view_pasta', name='view-pasta'),
+    url(r'^([^/]+)/([^/]+)/(?:([^/]+)/)?$', 'view_pasta', name='view-pasta'),
 )
