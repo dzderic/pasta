@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from pasta_app.models import Repository
@@ -14,7 +14,11 @@ def home(request):
 
 @login_required
 def view_pasta(request, owner, slug):
-    return render(request, 'pasta/view.html')
+    repo = get_object_or_404(Repository, owner__username=owner, slug=slug)
+
+    return render(request, 'pasta/view.html', {
+        'repo': repo,
+    })
 
 @login_required
 def new_pasta(request):
