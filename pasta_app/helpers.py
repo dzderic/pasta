@@ -1,4 +1,6 @@
 import re
+from functools import wraps
+
 from django.template.defaultfilters import slugify
 
 # `unique_slugify` from: http://djangosnippets.org/snippets/690/
@@ -70,3 +72,37 @@ def _slug_strip(value, separator='-'):
             re_sep = re.escape(separator)
         value = re.sub(r'^%s+|%s+$' % (re_sep, re_sep), '', value)
     return value
+
+def cached_property(func):
+    """
+    Returns a lazy property which is only evaluated once.
+    ::
+
+        class SomeClass(object):
+            @cached_property
+            def some_prop(self):
+                print 'calling'
+                return 5
+
+    >>> s = SomeClass() # instantiate the class
+    >>> s.some_prop     # this evaluates the property
+    calling
+    5
+    >>> s.some_prop     # returns the cached value
+    5
+    """
+    # Our key which specifies the property where the cached value is stored
+    key = '__cached_%s' % func.__name__
+    @property
+    @wraps(func)
+    def inner(self, *args, **kwargs):
+        # Check if we already cached the value
+        if not hasattr(self, key):
+            # Evaluate the value and set it in the cache
+            setattr(self, key, func(self, *args, **kwargs))
+
+        # Return the cached value
+        return getattr(self, key)
+
+    # Return the inner function which is called instead of `func`
+    return inner
