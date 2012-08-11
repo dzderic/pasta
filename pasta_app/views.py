@@ -11,6 +11,7 @@ from pasta_app.forms import NewPastaForm
 def home(request):
     return render(request, 'index.html', {
         'new_pasta_form': NewPastaForm(),
+        'pastas': Repository.objects.filter(owner=request.user),
     })
 
 @login_required

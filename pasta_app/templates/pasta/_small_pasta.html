@@ -1,0 +1,10 @@
+<ul class="breadcrumb pasta-small">
+  <li>
+    <i class="icon-user"></i>
+    <a href="{{ pasta.owner.get_absolute_url }}">{{ pasta.owner }}</a>
+    <span class="divider">/</span>
+  </li>
+  <li>
+    <a href="{{ pasta.get_absolute_url }}">{{ pasta.name }}</a>
+  </li>
+</ul>

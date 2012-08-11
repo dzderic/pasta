@@ -11,5 +11,11 @@
   </form>
 
   <h2>Your pastas</h2>
-  ...
+  {% if not pastas %}
+    <h4>It looks like you don't have any pastas yet. Go and make some!</h4>
+  {% else %}
+      {% for pasta in pastas %}
+        {% include "pasta/_small_pasta.html" %}
+      {% endfor %}
+  {% endif %}
 {% endblock %}
