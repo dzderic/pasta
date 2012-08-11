@@ -1,4 +1,5 @@
 /pasta/local_settings.py
 /pasta/db.sqlite
+/pasta/repositories
 *.pyc
 .*.swp
