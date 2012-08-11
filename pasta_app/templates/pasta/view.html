@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load guardian_tags %}
+{% load guardian_tags pasta_tags %}
 
 {% block title %}{{ pasta.name }}{% endblock %}
 
@@ -11,26 +11,31 @@
     {% if "write" in pasta_perms %}
       {% include "pasta/_repo_actions.html" %}
     {% endif %}
-
-    {% if not files %}
-      {% if "write" in pasta_perms %}
-        <h4>There doesn't seem to be anything here. Use the button to the right to add some files <i class="icon-arrow-right"></i></h4>
-      {% else %}
-        <h4>There's nothing in this Pasta yet. Wait for the owner to add some files.</h4>
-      {% endif %}
-    {% endif %}
-
+    <div id="empty-message"></div>
 
     <div class="span9">
-      {% for file in files %}
-        {{ file }}
-      {% endfor %}
+      <div id="files"></div>
     </div>
-    <div class="span9">
+    <div class="span3">
     </div>
   </div>
 {% endblock %}
 
 {% block extra-script %}
+<script src="/static/js/underscore.min.js" type="text/javascript"></script>
+<script src="/static/js/backbone.min.js" type="text/javascript"></script>
 <script src="/static/js/pasta.js" type="text/javascript"></script>
+<script type="text/javascript">
+  {% get_obj_perms request.user for pasta as "pasta_perms" %}
+  $(function() {
+    var pasta = new window.Pasta({{ files|jsonify }});
+    var mainView = new window.PastaView({ collection: pasta, permissions: {{ pasta_perms|jsonify }} });
+  });
+</script>
+{% endblock %}
+
+{% block templates %}
+<script type="text/template" id="file_template">
+  Things
+</script>
 {% endblock %}
