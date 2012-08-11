@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from guardian.decorators import permission_required_or_403
 
 from pasta_app.models import Repository
 from pasta_app.forms import NewPastaForm
@@ -13,6 +14,7 @@ def home(request):
     })
 
 @login_required
+@permission_required_or_403('read', (Repository, 'owner__username', 'owner', 'slug', 'slug'))
 def view_pasta(request, owner, slug, ref):
     pasta = get_object_or_404(Repository, owner__username=owner, slug=slug)
     ref = ref or 'master'
