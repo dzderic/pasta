@@ -44,7 +44,9 @@ class Repository(models.Model):
 
     def get_files(self, ref='master'):
         refs = self.repo.get_refs()
-        if 'refs/heads/' + ref in refs:
+        if not refs:  # no commits yet
+            return
+        elif 'refs/heads/' + ref in refs:
             ref_hash = refs['refs/heads/' + ref]
         elif ref in refs:
             ref_hash = refs[ref]
@@ -56,7 +58,7 @@ class Repository(models.Model):
         commit = self.repo.commit(ref_hash)
         trees = sorted(self.repo.tree(commit.tree).iteritems(), key=lambda x: x.path)
 
-        for thing in self.repo.tree(commit.tree).iteritems():
+        for thing in trees:
             if not stat.S_ISREG(thing.mode):  # skip if it's not a file
                 pass
 
