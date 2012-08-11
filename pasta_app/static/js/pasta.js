@@ -47,7 +47,7 @@ $(function() {
       var msg = '';
       if (this.collection.length === 0) {
         if (this.options.permissions.indexOf('write') !== -1) {
-          msg = "<h4>There doesn't seem to be anything here. Use the button to the right to add some files <i class='icon-arrow-right'></i></h4>";
+          msg = "<h4>There doesn't seem to be anything here. Use the button in the above navbar to add some files <i class='icon-arrow-up'></i></h4>";
         } else {
           msg = "<h4>There's nothing in this Pasta yet. Wait for someone to add some files.</h4>";
         }

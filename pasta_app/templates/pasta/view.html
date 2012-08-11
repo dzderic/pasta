@@ -4,13 +4,15 @@
 
 {% block title %}{{ pasta.name }}{% endblock %}
 
-{% block content %}
+{% block extra-nav %}
   {% get_obj_perms request.user for pasta as "pasta_perms" %}
+  {% if "write" in pasta_perms %}
+    {% include "pasta/_repo_actions.html" %}
+  {% endif %}
+{% endblock %}
 
+{% block content %}
   <div class="row">
-    {% if "write" in pasta_perms %}
-      {% include "pasta/_repo_actions.html" %}
-    {% endif %}
     <div id="empty-message"></div>
 
     <div class="span9">
@@ -38,7 +40,8 @@
 <script type="text/template" id="pasta-file-template">
   <div class="pasta-file">
     <div class="well form-inline">
-      <input type="text" class="input-large pasta-file-name" placeholder="File name" value="<%= file.get('path') || '' %>" />
+      <input type="text" class="input-large pasta-file-name"
+             placeholder="File name" value="<%= file.get('path') || '' %>" />
       <button class="btn btn-danger remove-file pull-right" title="Remove this file">
         <i class="icon-trash icon-white"></i>
       </button>
