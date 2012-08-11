@@ -1,3 +1,13 @@
 .pasta-small {
   display: inline-block;
 }
+
+#pasta-files {
+  padding-top: 32px;  /* to account for the add/revert/commit buttons */
+}
+
+.pasta-file textarea {
+  width: 100%;
+  height: 500px;
+  font-family: monospace;
+}

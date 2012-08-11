@@ -1,29 +1,46 @@
 $(function() {
   window.File = Backbone.Model.extend({});
   window.FileView = Backbone.View.extend({
-    el: $('#files'),
+    parentEl: $('#pasta-files'),
+    template: _.template($('#pasta-file-template').html()),
     model: File,
+    initialize: function() {
+      this.render();
+    },
     render: function() {
-      var template = _.template($('#file_template').html(), {});
-      $(this.el).append(template);
+      this.$el = $(this.template({ file: this.model })).appendTo(this.parentEl);
+    },
+    events: {
+      "click .remove-file": "removeFile",
+      "change .pasta-file-name": "setName",
+      "change .pasta-content": "setContent"
+    },
+    removeFile: function() {
+      console.log(this.model);
+      this.model.destroy();
+      this.$el.remove();
+    },
+    setName: function(e) {
+      this.model.set({ path: $(e.currentTarget).val() });
+    },
+    setContent: function(e) {
+      this.model.set({ content: $(e.currentTarget).val() });
     }
   });
 
   window.Pasta = Backbone.Collection.extend({
-    model: File,
-    initialize: function(models, options) {
-      this.bind("add", function(model) {
-      });
-    }
+    model: File
   });
   window.PastaView = Backbone.View.extend({
     el: $('.container'),
     initialize: function() {
+      var that = this;
       this.msgIfEmpty();
-      this.collection.bind('add', _.bind(this.msgIfEmpty, this));
+      this.collection.on('add', _.bind(this.msgIfEmpty, this));
+      this.collection.on('remove', _.bind(this.msgIfEmpty, this));
 
-      var createAndRender = function(file) { return new FileView({ model: file }).render(); };
-      this.collection.bind('add', createAndRender);
+      var createAndRender = function(file) { return new FileView({ model: file }) };
+      this.collection.on('add', createAndRender);
       this.collection.each(createAndRender);
     },
     msgIfEmpty: function() {
