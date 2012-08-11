@@ -6,16 +6,17 @@
   <h2>New pasta</h2>
   <form class="well form-inline" action="/new/" method="POST">
     {% csrf_token %}
-    {{ new_pasta_form }}
+
+    <input id="id_name" type="text" name="name" maxlength="255" placeholder="Name" />
     <button type="submit" class="btn btn-primary">Let's get cooking!</button>
   </form>
 
   <h2>Your pastas</h2>
   {% if not pastas %}
     <h4>It looks like you don't have any pastas yet. Go and make some!</h4>
-  {% else %}
-      {% for pasta in pastas %}
-        {% include "pasta/_small_pasta.html" %}
-      {% endfor %}
   {% endif %}
+
+  {% for pasta in pastas %}
+    {% include "pasta/_small_pasta.html" %}
+  {% endfor %}
 {% endblock %}

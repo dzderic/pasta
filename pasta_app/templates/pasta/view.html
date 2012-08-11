@@ -8,11 +8,20 @@
   {% get_obj_perms request.user for pasta as "pasta_perms" %}
 
   <div class="row">
-    <div class="span9">
-      {% if "write" in pasta_perms %}
-        {% include "pasta/_repo_actions.html" %}
-      {% endif %}
+    {% if "write" in pasta_perms %}
+      {% include "pasta/_repo_actions.html" %}
+    {% endif %}
 
+    {% if not files %}
+      {% if "write" in pasta_perms %}
+        <h4>There doesn't seem to be anything here. Use the button to the right to add some files <i class="icon-arrow-right"></i></h4>
+      {% else %}
+        <h4>There's nothing in this Pasta yet. Wait for the owner to add some files.</h4>
+      {% endif %}
+    {% endif %}
+
+
+    <div class="span9">
       {% for file in files %}
         {{ file }}
       {% endfor %}

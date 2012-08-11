@@ -11,7 +11,7 @@ from pasta_app.forms import NewPastaForm
 def home(request):
     return render(request, 'index.html', {
         'new_pasta_form': NewPastaForm(),
-        'pastas': Repository.objects.filter(owner=request.user),
+        'pastas': Repository.objects.filter(owner=request.user).order_by('-created'),
     })
 
 @login_required
@@ -23,7 +23,7 @@ def view_pasta(request, owner, slug, ref):
     return render(request, 'pasta/view.html', {
         'pasta': pasta,
         'ref': ref,
-        'files': pasta.get_files(ref),
+        'files': list(pasta.get_files(ref)),
     })
 
 @login_required
