@@ -69,4 +69,7 @@ class Repository(models.Model):
                 'contents': blob.data,
             }
 
+    def commit(self, user, message, files):
+        print user
+
 from pasta_app.listeners import *

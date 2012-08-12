@@ -33,7 +33,7 @@ $(function() {
     model: File
   });
   window.PastaView = Backbone.View.extend({
-    el: $('.container'),
+    el: $(document.body),
     initialize: function() {
       var that = this;
       this.msgIfEmpty();
@@ -57,7 +57,8 @@ $(function() {
     },
     events: {
       "click #add-file": "addFile",
-      "click #do-commit": "showCommitDialog"
+      "click #do-commit": "showCommitDialog",
+      "click #actually-commit": "actuallyCommit"
     },
     addFile: function() {
       this.collection.add(new File());
@@ -65,6 +66,18 @@ $(function() {
     showCommitDialog: function() {
       $("#commit-modal").modal('show');
       $("#commit-message").focus();
+    },
+    actuallyCommit: function() {
+      var url = "/" + this.options.owner + "/" + this.options.slug + "/commit/";
+      var data = JSON.stringify({
+        message: $('#commit-message').val(),
+        files: this.collection.map(function(file) {
+          return { path: file.get('path'), content: file.get('content') };
+        })
+      });
+      $.post(url, data, function(data) {
+        alert(JSON.stringify(data));
+      }, 'json');
     }
   });
 });

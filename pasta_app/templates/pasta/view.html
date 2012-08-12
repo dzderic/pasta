@@ -31,7 +31,12 @@
   {% get_obj_perms request.user for pasta as "pasta_perms" %}
   $(function() {
     var pasta = new window.Pasta({{ files|jsonify }});
-    var mainView = new window.PastaView({ collection: pasta, permissions: {{ pasta_perms|jsonify }} });
+    var mainView = new window.PastaView({
+      collection: pasta,
+      permissions: {{ pasta_perms|jsonify }},
+      owner: {{ pasta.owner.username|jsonify }},
+      slug: {{ pasta.slug|jsonify }}
+    });
   });
 </script>
 {% endblock %}

@@ -10,6 +10,7 @@ urlpatterns = patterns('pasta_app.views',
         kwargs={'template_name': 'login.html', 'authentication_form': BootstrapAuthForm}),
     url(r'^accounts/logout/$', logout_then_login, name='logout'),
 
-    # This should be last as it matches almost anything
+    # These should be last as they matche almost anything
+    url(r'^(?P<owner>[^/]+)/(?P<slug>[^/]+)/commit/$', 'do_commit', name='do-commit'),
     url(r'^(?P<owner>[^/]+)/(?P<slug>[^/]+)/(?:(?P<ref>[^/]+)/)?$', 'view_pasta', name='view-pasta'),
 )
