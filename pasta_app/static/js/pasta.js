@@ -9,6 +9,7 @@ $(function() {
     },
     render: function() {
       this.$el = $(this.template({ file: this.model })).appendTo(this.parentEl);
+      $('.pasta-content', this.$el).focus();
     },
     events: {
       "click .remove-file": "removeFile",
@@ -47,7 +48,7 @@ $(function() {
       var msg = '';
       if (this.collection.length === 0) {
         if (this.options.permissions.indexOf('write') !== -1) {
-          msg = "<h4>There doesn't seem to be anything here. Use the button in the above navbar to add some files <i class='icon-arrow-up'></i></h4>";
+          msg = "<h4>There doesn't seem to be anything here. Use the button in the navbar to add some files <i class='icon-arrow-up'></i></h4>";
         } else {
           msg = "<h4>There's nothing in this Pasta yet. Wait for someone to add some files.</h4>";
         }
@@ -55,10 +56,15 @@ $(function() {
       $('#empty-message').html(msg);
     },
     events: {
-      "click #add-file": "addFile"
+      "click #add-file": "addFile",
+      "click #do-commit": "showCommitDialog"
     },
     addFile: function() {
       this.collection.add(new File());
+    },
+    showCommitDialog: function() {
+      $("#commit-modal").modal('show');
+      $("#commit-message").focus();
     }
   });
 });

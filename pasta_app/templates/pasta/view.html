@@ -37,6 +37,20 @@
 {% endblock %}
 
 {% block templates %}
+<div id="commit-modal" class="modal hide">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <h3>Committing to: {{ pasta.name }}</h3>
+  </div>
+  <div class="modal-body">
+    <p>Commit message:</p>
+    <textarea id="commit-message"></textarea>
+  </div>
+  <div class="modal-footer">
+     <a href="#" class="btn" data-dismiss="modal">Close</a>
+     <a href="#" id="actually-commit" class="btn btn-success">Commit!</a>
+  </div>
+</div>
 <script type="text/template" id="pasta-file-template">
   <div class="pasta-file">
     <div class="well form-inline">
